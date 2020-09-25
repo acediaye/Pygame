@@ -1,14 +1,19 @@
 import pygame
 
 pygame.init()
-window = pygame.display.set_mode((500, 500))
+screenwidth = 500
+screenheight = 500
+window = pygame.display.set_mode((screenwidth, screenheight))
 pygame.display.set_caption("my game")
 
+# character
 x = 50
 y = 50
 width = 40
 height = 60
-velocity = 5
+velocity = 10
+isJump = False
+jumpCount = 10
 
 run = True
 while run:
@@ -21,16 +26,31 @@ while run:
             run = False
 
     # key press: continue to trigger instead once
+    # boundary checking
+    # jumping mechanic
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_LEFT] and x > 0:
         x -= velocity
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_RIGHT] and x < screenwidth - width:
         x += velocity
-    if keys[pygame.K_UP]:
-        y -= velocity
-    if keys[pygame.K_DOWN]:
-        y += velocity
-
+    if not(isJump):
+        if keys[pygame.K_UP] and y > 0:
+            y -= velocity
+        if keys[pygame.K_DOWN] and y < screenheight - height :
+            y += velocity
+        if keys[pygame.K_SPACE]:
+            isJump = True
+    else:  # is jump
+        if jumpCount >= -10:
+            neg = 1
+            if jumpCount < 0:
+                neg = -1
+            y -= neg * 1/2 * jumpCount * jumpCount
+            jumpCount -= 1
+        else:
+            isJump = False
+            jumpCount = 10
+#50, 40.5, 32, 24.5, 18, 12.5, 8, 4.5, 2, 0.5, 0, 0.5
     # rewrite background
     window.fill((0, 0, 0))
 
