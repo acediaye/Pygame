@@ -45,7 +45,7 @@ while run:
             neg = 1
             if jumpCount < 0:
                 neg = -1
-            y -= neg * 1/2 * jumpCount * jumpCount
+            y -= round(neg * 1/2 * jumpCount * jumpCount)
             jumpCount -= 1
         else:
             isJump = False
